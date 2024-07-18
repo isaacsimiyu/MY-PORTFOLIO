@@ -1,0 +1,30 @@
+.about {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.about h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 10px;
+}
+
+.about p {
+  font-size: 1.1em;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.about ul {
+  list-style: none;
+  padding: 0;
+}
+
+.about ul li {
+  background: #f4f4f4;
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 1.1em;
+  color: #333;
+}
