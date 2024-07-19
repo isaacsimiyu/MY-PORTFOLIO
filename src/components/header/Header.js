@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button, Container, NavDropdown } from 'react-bootstrap';
+import { Nav, Button, Container, NavDropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import logo from "../../assets/logo/logo.png";
@@ -49,35 +49,35 @@ const Header = () => {
             <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} />
           </button>
           <nav className={`header-nav ${isMenuOpen ? 'open' : ''}`}>
-            <ul>
-              <li><Link to="/" onClick={toggleMenu}>Home</Link></li>
-              <li><Link to="/skills" onClick={toggleMenu}>Skills</Link></li>
-              <li><Link to="/projects" onClick={toggleMenu}>Projects</Link></li>
-              <li
-                className="nav-item dropdown"
+            <Nav className="mr-auto">
+              <Nav.Link as={Link} to="/" onClick={toggleMenu}>Home</Nav.Link>
+              <Nav.Link as={Link} to="/skills" onClick={toggleMenu}>Skills</Nav.Link>
+              <Nav.Link as={Link} to="/projects" onClick={toggleMenu}>Projects</Nav.Link>
+              <NavDropdown
+                title="About"
+                id="nav-dropdown"
                 onMouseEnter={toggleDropdown}
                 onMouseLeave={toggleDropdown}
+                show={isDropdownOpen}
               >
-                <span className="nav-link dropdown-toggle">About</span>
-                {isDropdownOpen && (
-                  <div className="dropdown-menu show">
-                    <NavDropdown.Item onClick={() => handleDropdownItemClick("/home")}>
-                      Services
-                    </NavDropdown.Item>
-                    <NavDropdown.Item onClick={() => handleDropdownItemClick("/home")}>
-                      Profile Info
-                    </NavDropdown.Item>
-                    <NavDropdown.Item onClick={() => handleDropdownItemClick("/home")}>
-                      Isaac In Brief
-                    </NavDropdown.Item>
-                    <NavDropdown.Item onClick={() => handleDropdownItemClick("/home")}>
-                      Success and Excellence
-                    </NavDropdown.Item>
-                  </div>
-                )}
-              </li>
-              <li><Link to="/contact" onClick={toggleMenu}>Contact</Link></li>
-            </ul>
+                <NavDropdown.Item onClick={() => handleDropdownItemClick("/services")}>
+                  Services
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={() => handleDropdownItemClick("/profile-info")}>
+                  Profile Info
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={() => handleDropdownItemClick("/isaac-in-brief")}>
+                  Isaac In Brief
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={() => handleDropdownItemClick("/success-and-excellence")}>
+                  Success and Excellence
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={() => handleDropdownItemClick("/marital-status")}>
+                  Marital Status
+                </NavDropdown.Item>
+              </NavDropdown>
+              <Nav.Link as={Link} to="/contact" onClick={toggleMenu}>Contact</Nav.Link>
+            </Nav>
           </nav>
         </div>
       </Container>

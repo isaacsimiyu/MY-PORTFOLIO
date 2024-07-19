@@ -11,11 +11,24 @@ import home9 from "../../assets/home/home9.jpg";
 import home10 from "../../assets/home/home10.jpg";
 import home12 from "../../assets/home/home12.jpg";
 
-
+ 
 const Home = () => {
   const [showBackground, setShowBackground] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const images = [home1, home2, home5, home6, home8, home9, home11, home10, home12];
+
+  const descriptions = [
+    "Networking",
+    "Database",
+    "Computing",
+    "Graphic",
+    "Description for image 5",
+    "Description for image 6",
+    "Description for image 7",
+    "Description for image 8",
+    "Description for image 9"
+  ];
+  
 
   useEffect(() => {
     const timer = setTimeout(() => {

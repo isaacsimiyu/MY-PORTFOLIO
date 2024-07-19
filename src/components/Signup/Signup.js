@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './Signup.css';
 
 const Signup = () => {
@@ -37,11 +38,15 @@ const Signup = () => {
     e.preventDefault();
     setIsLoading(true);
     if (validateForm()) {
-      setTimeout(() => {
-        setIsSuccess(true);
-        setIsLoading(false);
-        console.log('Form Submitted');
-      }, 2000); // Simulating network delay
+      axios.post('/signup', { userNameOrEmail, password })
+        .then(response => {
+          setIsSuccess(true);
+          setIsLoading(false);
+        })
+        .catch(error => {
+          setErrors({ ...errors, form: error.response.data.msg });
+          setIsLoading(false);
+        });
     } else {
       setIsLoading(false);
     }
@@ -78,6 +83,7 @@ const Signup = () => {
         </button>
       </form>
       {isSuccess && <p className="success-message">Successfully signed up!</p>}
+      {errors.form && <p className="error-message">{errors.form}</p>}
     </div>
   );
 };

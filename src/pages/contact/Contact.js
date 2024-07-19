@@ -65,7 +65,7 @@ const Contact = () => {
         <div className="map-container">
           <iframe
             title="Google Map"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15958.108889210304!2d34.985431300000006!3d1.0152540000000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x178101231c150915%3A0x1b71ae4af1e5e8e7!2sKitale!5e0!3m2!1sen!2ske!4v1620744844217!5m2!1sen!2ske"
+         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d16006.828973287634!2d34.964849!3d0.8834421!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x178101c09e6f14e5%3A0x7f5184e9e1b6b8f7!2sKiminini%2C%20Kenya!5e0!3m2!1sen!2sus!4v1620744844217!5m2!1sen!2sus"
             width="1200"
             height="450"
             style={{ border: 0 }}

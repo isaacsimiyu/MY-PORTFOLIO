@@ -1,17 +1,43 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './Signin.css';
+/* global FB */
 
-const SignIn = ({ setIsSignedIn }) => {
-  const [email, setEmail] = useState('');
+import React, { useState, useEffect } from 'react';
+import './Signin.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+
+const SignIn = () => {
+  const [userNameOrEmail, setUserNameOrEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
   const navigate = useNavigate();
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+  useEffect(() => {
+    const loadFacebookSDK = () => {
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId: 'YOUR_FACEBOOK_APP_ID',
+          cookie: true,
+          xfbml: true,
+          version: 'v12.0'
+        });
+      };
+
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    };
+
+    loadFacebookSDK();
+  }, []);
+
+  const handleUserNameOrEmailChange = (e) => {
+    setUserNameOrEmail(e.target.value);
   };
 
   const handlePasswordChange = (e) => {
@@ -21,14 +47,18 @@ const SignIn = ({ setIsSignedIn }) => {
   const validateForm = () => {
     const newErrors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // Minimum eight characters, at least one letter and one number
 
-    if (!emailRegex.test(email)) {
-      newErrors.email = 'Invalid email address.';
+    if (!userNameOrEmail) {
+      newErrors.userNameOrEmail = 'User Name or Email is required';
+    } else if (!emailRegex.test(userNameOrEmail)) {
+      newErrors.userNameOrEmail = 'Invalid email format';
     }
 
-    if (!passwordRegex.test(password)) {
-      newErrors.password = 'Password must be at least 8 characters long and contain at least one letter and one number.';
+    if (!password) {
+      newErrors.password = 'Password is required';
+    } else if (!passwordRegex.test(password)) {
+      newErrors.password = 'Password must be at least 8 characters long and include at least one letter and one number';
     }
 
     setErrors(newErrors);
@@ -39,15 +69,51 @@ const SignIn = ({ setIsSignedIn }) => {
     e.preventDefault();
     setIsLoading(true);
     if (validateForm()) {
-      setTimeout(() => {
-        setIsSignedIn(true);
-        setIsSuccess(true);
-        setIsLoading(false);
-        navigate('/home'); // Navigate to a different page after successful sign-in
-      }, 2000); // Simulating network delay
+      axios.post('/signin', { userNameOrEmail, password })
+        .then(response => {
+          localStorage.setItem('token', response.data.token);
+          navigate('/dashboard');
+        })
+        .catch(error => {
+          setErrors({ ...errors, form: error.response?.data?.msg || 'Sign In failed. Please try again.' });
+          setIsLoading(false);
+        });
     } else {
       setIsLoading(false);
     }
+  };
+
+  const handleGoogleLoginSuccess = (response) => {
+    axios.post('/google-signin', { token: response.credential })
+      .then(response => {
+        localStorage.setItem('token', response.data.token);
+        navigate('/dashboard');
+      })
+      .catch(error => {
+        setErrors({ ...errors, form: 'Google Sign-In failed. Please try again.' });
+      });
+  };
+
+  const handleGoogleLoginFailure = (response) => {
+    setErrors({ ...errors, form: 'Google Sign-In failed. Please try again.' });
+  };
+
+  const handleFacebookLogin = () => {
+    FB.login(response => {
+      if (response.authResponse) {
+        const { accessToken, userID } = response.authResponse;
+        axios.post('/facebook-signin', { accessToken, userID })
+          .then(response => {
+            localStorage.setItem('token', response.data.token);
+            navigate('/dashboard');
+          })
+          .catch(error => {
+            setErrors({ ...errors, form: 'Facebook Sign-In failed. Please try again.' });
+          });
+      } else {
+        setErrors({ ...errors, form: 'Facebook Sign-In failed. Please try again.' });
+      }
+    }, { scope: 'email' });
   };
 
   return (
@@ -55,15 +121,15 @@ const SignIn = ({ setIsSignedIn }) => {
       <h2>Sign In</h2>
       <form onSubmit={handleSubmit} className="signin-form">
         <div className="form-group">
-          <label htmlFor="email"></label>
+          <label htmlFor="userNameOrEmail"></label>
           <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={handleEmailChange}
+            type="text"
+            placeholder="User Name Or Email"
+            value={userNameOrEmail}
+            onChange={handleUserNameOrEmailChange}
             disabled={isLoading}
           />
-          {errors.email && <span className="error">{errors.email}</span>}
+          {errors.userNameOrEmail && <span className="error">{errors.userNameOrEmail}</span>}
         </div>
         <div className="form-group">
           <label htmlFor="password"></label>
@@ -80,7 +146,17 @@ const SignIn = ({ setIsSignedIn }) => {
           {isLoading ? 'Signing in...' : 'Sign In'}
         </button>
       </form>
-      {isSuccess && <p className="success-message">Successfully signed in!</p>}
+      <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+        <GoogleLogin
+          onSuccess={handleGoogleLoginSuccess}
+          onFailure={handleGoogleLoginFailure}
+          buttonText="Sign in with Google"
+        />
+      </GoogleOAuthProvider>
+      <button onClick={handleFacebookLogin} disabled={isLoading}>
+        Sign in with Facebook
+      </button>
+      {errors.form && <p className="error-message">{errors.form}</p>}
     </div>
   );
 };
