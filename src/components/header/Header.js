@@ -3,20 +3,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Nav, Button, Container, NavDropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
-import logo from "../../assets/logo/logo.png";
+
 import './Header.css';
 
 const Header = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const [isDropdownOpen, setDropdownOpen] = useState(false); // State for dropdown visibility
   const navigate = useNavigate();
 
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
-  };
-
-  const toggleDropdown = () => {
-    setDropdownOpen(!isDropdownOpen);
   };
 
   const handleNavigation = (path) => {
@@ -26,7 +21,6 @@ const Header = () => {
 
   const handleDropdownItemClick = (path) => {
     navigate(path);
-    setDropdownOpen(false); // Close the dropdown after navigation
   };
 
   return (
@@ -41,9 +35,7 @@ const Header = () => {
       </div>
       <Container>
         <div className="header-container">
-          <Link to="/">
-            <img src={logo} alt="portfolio-logo" className="logo" />
-          </Link>
+          
           <h1 className="header-title">My Portfolio</h1>
           <button className="menu-toggle" onClick={toggleMenu}>
             <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} />
@@ -56,9 +48,7 @@ const Header = () => {
               <NavDropdown
                 title="About"
                 id="nav-dropdown"
-                onMouseEnter={toggleDropdown}
-                onMouseLeave={toggleDropdown}
-                show={isDropdownOpen}
+                className="nav-dropdown"
               >
                 <NavDropdown.Item onClick={() => handleDropdownItemClick("/services")}>
                   Services

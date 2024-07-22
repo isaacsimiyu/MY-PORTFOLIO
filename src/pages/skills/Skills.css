@@ -1,73 +1,107 @@
+/* Skills.css */
 
-.skill {
-  margin-bottom: 20px;
-  text-align: center;
-  padding: 15px;
-  background-color: #fff; 
-  border-radius: 8px;
-  
+.skills {
+  margin: 15px; /* Add spacing around each skill */
+  text-align: center; /* Center align text within each skill card */
 }
 
-.skill img {
-  max-width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+.skills img {
+  max-width: 30%; /* Ensure images don't exceed column width */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 8px; /* Optional: Add rounded corners to images */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better visual effect */
 }
 
 .skill-description {
-  margin-top: 10px;
+  padding: 10px;
 }
 
 .skill-description h4 {
-  font-size: 20px;
+  font-size: 1.25rem; /* Reduce font size of the title */
+  margin-bottom: 10px;
 }
 
 .skill-description p {
-  font-size: 16px;
-  margin-top: 10px;
-  text-align: justify;
-   
+  font-size: 0.875rem; /* Reduce font size of the description */
+  margin-bottom: 10px;
+  max-width: 50%;
+  
 }
-
 
 .skill-description button {
-  margin-top: 10px;
-  background-color: #007bff; 
-  border: none;
-  color: #fff;
-  padding: 5px 15px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+  font-size: 0.875rem; /* Reduce font size of the button */
+  max-width: 30%;
+
 }
 
-.skill-description button:hover {
-  background-color: #0056b3; 
+/* Section with background image */
+.section-with-image {
+  position: relative;
+  text-align: center;
+  color: white;
 }
 
+.skills-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px; /* Adjust the gap between items as needed */
+}
 
+.background-image {
+  /* Update this path as needed */
+  background-size: cover;
+  background-position: center;
+  height: 200px; /* Adjust height as needed */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: -1;
+}
 
+h1 {
+  padding: 60px 0; /* Add padding for better spacing */
+  margin: 0;
+  font-size: 2rem; /* Adjust size as needed */
+}
 
-
+/* Media Queries for Responsive Design */
 @media (max-width: 768px) {
-  
-  .section-with-image h1 {
-    font-size: 24px;
+  .skills {
+    margin: 10px; /* Adjust margin for smaller screens */
   }
 
-  .Skill {
-    padding: 10px;
+  .skills img {
+    max-width: 90%; /* Ensure images fit well on smaller screens */
   }
 
   .skill-description h4 {
-    font-size: 18px;
+    font-size: 1rem; /* Adjust font size for better readability on small screens */
   }
 
   .skill-description p {
-    font-size: 14px;
+    font-size: 0.75rem; /* Adjust font size for better readability on small screens */
   }
 
   .skill-description button {
-    padding: 5px 10px;
+    font-size: 0.75rem; /* Adjust button font size for better usability on small screens */
   }
+  /* Optional: Adjust for responsiveness */
+@media (max-width: 1200px) {
+  .skills-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .skills-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .skills-container {
+    grid-template-columns: 1fr;
+  }
+}
 }
