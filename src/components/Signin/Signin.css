@@ -10,7 +10,7 @@
   border: 1px solid #ddd;
   border-radius: 10px;
   width: 100%;
-  max-width: 400px;
+  max-width: 300px;
   margin: auto;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
  
@@ -53,10 +53,10 @@ input:disabled {
 
 button {
   width: 100%;
-  padding: 10px;
+  padding: 10px 20px;
   background-color: #007bff;
   border: none;
-  border-radius: 20px;
+  border-radius: 50%;
   color: white;
   font-size: 16px;
   cursor: pointer;
@@ -65,7 +65,7 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #e2141b;
 }
 
 button:disabled {
@@ -104,4 +104,30 @@ button:disabled {
 .success-message {
   color: green;
   margin-top: 20px;
+}
+.additional-links {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.additional-links a {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.additional-links a:hover {
+  text-decoration: underline;
+}
+.password-wrapper {
+  position: relative;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
 }

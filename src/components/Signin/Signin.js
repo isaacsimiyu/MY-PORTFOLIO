@@ -5,10 +5,14 @@ import './Signin.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const SignIn = () => {
   const [userNameOrEmail, setUserNameOrEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -42,6 +46,9 @@ const SignIn = () => {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+  };
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const validateForm = () => {
@@ -133,18 +140,27 @@ const SignIn = () => {
         </div>
         <div className="form-group">
           <label htmlFor="password"></label>
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={handlePasswordChange}
-            disabled={isLoading}
-          />
+          <div className="password-wrapper">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              onChange={handlePasswordChange}
+              disabled={isLoading}
+            />
+            <span className="eye-icon" onClick={togglePasswordVisibility}>
+              <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+            </span>
+          </div>
           {errors.password && <span className="error">{errors.password}</span>}
         </div>
         <button type="submit" disabled={isLoading}>
           {isLoading ? 'Signing in...' : 'Sign In'}
         </button>
+        <div className="additional-links">
+          <Link to="/forgot-password">Forgot Password?</Link>
+          <Link to="/reset-password">Reset Password</Link>
+        </div>
       </form>
       <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
         <GoogleLogin
