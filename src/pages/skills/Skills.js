@@ -38,7 +38,8 @@ const Skill = ({image, title, description}) => {
         <section className="section-with-image">
         <div className="background-image"></div>
         <h1>Skills</h1>
-      </section><section className="Skills">
+      </section>
+      <section className="Skills">
           <Container>
             <Row>
               <Skill

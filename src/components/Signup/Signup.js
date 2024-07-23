@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Signup.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+
 
 const Signup = () => {
   const [userNameOrEmail, setUserNameOrEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -15,6 +19,9 @@ const Signup = () => {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+  };
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const validateForm = () => {
@@ -69,13 +76,18 @@ const Signup = () => {
         </div>
         <div className="form-group">
           <label htmlFor="password"></label>
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={handlePasswordChange}
-            disabled={isLoading}
-          />
+          <div className="password-wrapper">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              onChange={handlePasswordChange}
+              disabled={isLoading}
+            />
+            <span className="eye-icon" onClick={togglePasswordVisibility}>
+              <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+            </span>
+          </div>
           {errors.password && <span className="error">{errors.password}</span>}
         </div>
         <button type="submit" disabled={isLoading}>
